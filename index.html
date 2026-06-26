@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ꠍꠥꠞꠝꠣ ꠅꠁꠟꠣ — Surma Dictionary</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0D0520 !important;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  padding: 20px 16px 40px;
+  color: #F0EAFF;
+}
+
+.wrapper { max-width: 700px; margin: 0 auto; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 28px; }
+.title-nagri {
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FFFFFF, #FFD580);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+.title-en {
+  font-size: 13px;
+  color: #C8922A;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.title-desc {
+  font-size: 12px;
+  color: rgba(200,180,255,0.5);
+  margin-top: 8px;
+}
+.divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, #C8922A, #9B6FD6);
+  margin: 10px auto; border-radius: 2px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  background: #1A0840;
+  border-radius: 12px;
+  padding: 6px;
+}
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: rgba(200,180,255,0.5);
+  letter-spacing: 1px;
+}
+.tab.active {
+  background: #3D1A80;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(107,63,160,0.5);
+}
+
+/* Panel */
+.panel {
+  background: #1A0840 !important;
+  border: 2px solid #3D1A80;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #C8922A;
+  margin-bottom: 14px;
+}
+
+/* Search */
+.search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.search-toggle {
+  display: flex;
+  background: #0D0420;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid #3D1A80;
+}
+.search-toggle button {
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: rgba(200,180,255,0.5);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.search-toggle button.active {
+  background: #3D1A80;
+  color: #FFFFFF;
+}
+
+input[type="text"], textarea {
+  width: 100%;
+  background: #0D0420 !important;
+  border: 1.5px solid #3D1A80 !important;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 18px;
+  color: #FFFFFF !important;
+  outline: none;
+  -webkit-text-fill-color: #FFFFFF !important;
+  font-family: inherit;
+}
+input[type="text"]::placeholder { color: rgba(255,255,255,0.3) !important; font-size: 14px; }
+input[type="text"]:focus { border-color: #7B4FD0 !important; }
+
+.search-btn {
+  padding: 12px 20px;
+  background: #3D1A80;
+  border: none;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.search-btn:hover { background: #C8922A; }
+
+/* Results */
+.results { margin-top: 14px; }
+.result-item {
+  background: #0D0420;
+  border: 1px solid #3D1A80;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.result-sylheti { font-size: 20px; color: #FFD580; font-weight: 700; }
+.result-bangla { font-size: 18px; color: #7BE0A0; }
+.result-arrow { color: #9B6FD6; font-size: 16px; margin: 0 10px; }
+.no-result { text-align: center; color: rgba(200,180,255,0.4); font-size: 14px; padding: 20px; }
+
+/* Submit form */
+.form-group { margin-bottom: 14px; }
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #9B6FD6;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #3D1A80;
+  border: none;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+.submit-btn:hover { background: #C8922A; }
+
+/* Admin */
+.admin-login {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.admin-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: #0D0420 !important;
+  border: 1.5px solid #3D1A80 !important;
+  border-radius: 10px;
+  color: #FFFFFF !important;
+  font-size: 14px;
+  outline: none;
+  -webkit-text-fill-color: #FFFFFF !important;
+}
+.admin-btn {
+  padding: 10px 18px;
+  background: #C8922A;
+  border: none;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.pending-item {
+  background: #0D0420;
+  border: 1px solid #3D1A80;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.pending-words {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.pending-meta {
+  font-size: 11px;
+  color: rgba(200,180,255,0.4);
+  margin-bottom: 8px;
+}
+.approve-btn {
+  padding: 6px 16px;
+  background: #2E7D32;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.approve-btn:hover { background: #388E3C; }
+.reject-btn {
+  padding: 6px 16px;
+  background: #B71C1C;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* Alert */
+.alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  display: none;
+}
+.alert.success { background: rgba(46,125,50,0.3); border: 1px solid #2E7D32; color: #7BE0A0; }
+.alert.error { background: rgba(183,28,28,0.3); border: 1px solid #B71C1C; color: #FF8080; }
+.alert.show { display: block; }
+
+.loading {
+  text-align: center;
+  color: rgba(200,180,255,0.5);
+  font-size: 13px;
+  padding: 16px;
+  display: none;
+}
+
+.page-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 11px;
+  color: rgba(155,111,214,0.3);
+  letter-spacing: 2px;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="title-nagri">ꠍꠥꠞꠝꠣ ꠅꠁꠟꠣ</div>
+    <div class="title-en">Surma Dictionary</div>
+    <div class="divider"></div>
+    <div class="title-desc">সিলেটি ↔ বাংলা কমিউনিটি অভিধান</div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('search')">🔍 অনুবাদ</button>
+    <button class="tab" onclick="showTab('submit')">➕ শব্দ যোগ</button>
+    <button class="tab" onclick="showTab('admin')">🔐 এডমিন</button>
+  </div>
+
+  <!-- SEARCH TAB -->
+  <div id="tab-search">
+    <div class="panel">
+      <div class="panel-title">অনুবাদ করুন</div>
+      <div class="search-row">
+        <div class="search-toggle">
+          <button class="active" id="btn-syl" onclick="setLang('sylheti')">সিলেটি→বাংলা</button>
+          <button id="btn-ban" onclick="setLang('bangla')">বাংলা→সিলেটি</button>
+        </div>
+      </div>
+      <div class="search-row">
+        <input type="text" id="search-input" placeholder="শব্দ লিখুন..." oninput="doSearch()">
+        <button class="search-btn" onclick="doSearch()">খুঁজুন</button>
+      </div>
+      <div class="loading" id="search-loading">খুঁজছি...</div>
+      <div class="results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- SUBMIT TAB -->
+  <div id="tab-submit" style="display:none">
+    <div class="panel">
+      <div class="panel-title">নতুন শব্দ যোগ করুন</div>
+      <div class="alert" id="submit-alert"></div>
+      <div class="form-group">
+        <label class="form-label">সিলেটি শব্দ</label>
+        <input type="text" id="input-sylheti" placeholder="সিলেটি শব্দ লিখুন...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">বাংলা অর্থ</label>
+        <input type="text" id="input-bangla" placeholder="বাংলা অর্থ লিখুন...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">আপনার নাম (ঐচ্ছিক)</label>
+        <input type="text" id="input-user" placeholder="আপনার নাম...">
+      </div>
+      <button class="submit-btn" onclick="submitWord()">জমা দিন →</button>
+      <p style="font-size:11px; color:rgba(200,180,255,0.4); margin-top:10px; text-align:center;">
+        জমা দেওয়ার পর এডমিন অনুমোদন করলে প্রকাশিত হবে
+      </p>
+    </div>
+  </div>
+
+  <!-- ADMIN TAB -->
+  <div id="tab-admin" style="display:none">
+    <div class="panel">
+      <div class="panel-title">এডমিন প্যানেল</div>
+      <div class="alert" id="admin-alert"></div>
+      <div id="admin-login-area">
+        <div class="admin-login">
+          <input type="password" class="admin-input" id="admin-pass" placeholder="পাসওয়ার্ড দিন...">
+          <button class="admin-btn" onclick="adminLogin()">প্রবেশ</button>
+        </div>
+      </div>
+      <div id="pending-area" style="display:none">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <span style="font-size:13px; color:#C8922A; font-weight:700;">অনুমোদন বাকি শব্দ</span>
+          <button onclick="loadPending()" style="background:transparent; border:1px solid #3D1A80; color:#9B6FD6; padding:4px 12px; border-radius:6px; font-size:11px; cursor:pointer;">রিফ্রেশ</button>
+        </div>
+        <div class="loading" id="pending-loading">লোড হচ্ছে...</div>
+        <div id="pending-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">surmafarorkhobor.com</div>
+</div>
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec';
+var currentLang = 'sylheti';
+var adminPassword = '';
+var searchTimer;
+
+function showTab(tab) {
+  document.getElementById('tab-search').style.display = 'none';
+  document.getElementById('tab-submit').style.display = 'none';
+  document.getElementById('tab-admin').style.display = 'none';
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('.tab').forEach(function(t, i) {
+    t.classList.remove('active');
+  });
+  var tabs = ['search','submit','admin'];
+  document.querySelectorAll('.tab')[tabs.indexOf(tab)].classList.add('active');
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.getElementById('btn-syl').classList.toggle('active', lang === 'sylheti');
+  document.getElementById('btn-ban').classList.toggle('active', lang === 'bangla');
+  document.getElementById('search-input').placeholder = lang === 'sylheti' ? 'সিলেটি শব্দ লিখুন...' : 'বাংলা শব্দ লিখুন...';
+  document.getElementById('search-results').innerHTML = '';
+  document.getElementById('search-input').value = '';
+}
+
+function doSearch() {
+  clearTimeout(searchTimer);
+  var q = document.getElementById('search-input').value.trim();
+  if (!q) { document.getElementById('search-results').innerHTML = ''; return; }
+  searchTimer = setTimeout(function() {
+    document.getElementById('search-loading').style.display = 'block';
+    document.getElementById('search-results').innerHTML = '';
+    fetch(API + '?action=search&query=' + encodeURIComponent(q) + '&lang=' + currentLang)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        document.getElementById('search-loading').style.display = 'none';
+        var html = '';
+        if (data.data && data.data.length > 0) {
+          data.data.forEach(function(item) {
+            html += '<div class="result-item">' +
+              '<span class="result-sylheti">' + item.sylheti + '</span>' +
+              '<span class="result-arrow">→</span>' +
+              '<span class="result-bangla">' + item.bangla + '</span>' +
+              '</div>';
+          });
+        } else {
+          html = '<div class="no-result">😔 কোনো শব্দ পাওয়া যায়নি<br><small style="color:rgba(200,180,255,0.3)">নতুন শব্দ যোগ করুন!</small></div>';
+        }
+        document.getElementById('search-results').innerHTML = html;
+      })
+      .catch(function() {
+        document.getElementById('search-loading').style.display = 'none';
+        document.getElementById('search-results').innerHTML = '<div class="no-result">সংযোগ সমস্যা হয়েছে</div>';
+      });
+  }, 400);
+}
+
+function submitWord() {
+  var syl = document.getElementById('input-sylheti').value.trim();
+  var ban = document.getElementById('input-bangla').value.trim();
+  var user = document.getElementById('input-user').value.trim() || 'অজ্ঞাত';
+  var alert = document.getElementById('submit-alert');
+  if (!syl || !ban) {
+    showAlert(alert, 'error', 'সিলেটি ও বাংলা শব্দ দুটোই দিন!');
+    return;
+  }
+  fetch(API + '?action=submit&sylheti=' + encodeURIComponent(syl) + '&bangla=' + encodeURIComponent(ban) + '&user=' + encodeURIComponent(user))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok') {
+        showAlert(alert, 'success', '✅ জমা হয়েছে! এডমিন অনুমোদনের পর প্রকাশিত হবে।');
+        document.getElementById('input-sylheti').value = '';
+        document.getElementById('input-bangla').value = '';
+        document.getElementById('input-user').value = '';
+      } else {
+        showAlert(alert, 'error', data.message || 'সমস্যা হয়েছে');
+      }
+    })
+    .catch(function() { showAlert(alert, 'error', 'সংযোগ সমস্যা হয়েছে'); });
+}
+
+function adminLogin() {
+  var pass = document.getElementById('admin-pass').value;
+  var alert = document.getElementById('admin-alert');
+  if (!pass) { showAlert(alert, 'error', 'পাসওয়ার্ড দিন'); return; }
+  adminPassword = pass;
+  loadPending();
+}
+
+function loadPending() {
+  var alert = document.getElementById('admin-alert');
+  document.getElementById('pending-loading').style.display = 'block';
+  document.getElementById('pending-list').innerHTML = '';
+  fetch(API + '?action=getPending&password=' + encodeURIComponent(adminPassword))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      document.getElementById('pending-loading').style.display = 'none';
+      if (data.status === 'error') {
+        showAlert(alert, 'error', data.message || 'পাসওয়ার্ড ভুল');
+        adminPassword = '';
+        return;
+      }
+      document.getElementById('admin-login-area').style.display = 'none';
+      document.getElementById('pending-area').style.display = 'block';
+      var html = '';
+      if (data.data && data.data.length > 0) {
+        data.data.forEach(function(item) {
+          html += '<div class="pending-item" id="row-' + item.row + '">' +
+            '<div class="pending-words">' +
+            '<span class="result-sylheti">' + item.sylheti + '</span>' +
+            '<span class="result-arrow">→</span>' +
+            '<span class="result-bangla">' + item.bangla + '</span>' +
+            '</div>' +
+            '<div class="pending-meta">👤 ' + (item.user||'অজ্ঞাত') + ' &nbsp;|&nbsp; 📅 ' + (item.date||'') + '</div>' +
+            '<button class="approve-btn" onclick="approveWord(' + item.row + ')">✅ অনুমোদন</button>' +
+            '<button class="reject-btn" onclick="rejectWord(' + item.row + ')">❌ বাতিল</button>' +
+            '</div>';
+        });
+      } else {
+        html = '<div class="no-result">🎉 কোনো অনুমোদন বাকি নেই!</div>';
+      }
+      document.getElementById('pending-list').innerHTML = html;
+    })
+    .catch(function() {
+      document.getElementById('pending-loading').style.display = 'none';
+      showAlert(alert, 'error', 'সংযোগ সমস্যা হয়েছে');
+    });
+}
+
+function approveWord(row) {
+  fetch(API + '?action=approve&row=' + row + '&password=' + encodeURIComponent(adminPassword))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status === 'ok') {
+        var el = document.getElementById('row-' + row);
+        if (el) { el.style.opacity = '0.3'; el.innerHTML += '<div style="color:#7BE0A0;font-size:12px;margin-top:6px;">✅ অনুমোদিত হয়েছে</div>'; }
+      }
+    });
+}
+
+function rejectWord(row) {
+  fetch(API + '?action=approve&row=' + row + '&password=' + encodeURIComponent(adminPassword) + '&status=rejected')
+    .then(function() {
+      var el = document.getElementById('row-' + row);
+      if (el) { el.style.opacity = '0.3'; el.innerHTML += '<div style="color:#FF8080;font-size:12px;margin-top:6px;">❌ বাতিল হয়েছে</div>'; }
+    });
+}
+
+function showAlert(el, type, msg) {
+  el.className = 'alert ' + type + ' show';
+  el.textContent = msg;
+  setTimeout(function() { el.classList.remove('show'); }, 4000);
+}
+</script>
+</body>
+</html>
