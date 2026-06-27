@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
     <title>Syloti Surma Dictionary</title>
+    <!-- প্রফেশনাল ফন্টসমূহ -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Sans+Syloti+Nagri&display=swap" rel="stylesheet">
     <style>
+        /* প্রফেশনাল ডার্ক পার্পল ও গোল্ড থিম */
         :root {
             --bg-color: #0D0520;
             --card-bg: #1A0F33;
@@ -19,58 +21,229 @@
             --output-border: #3B5E5E;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
 
-        body { background-color: var(--bg-color); color: var(--text-light); display: flex; flex-direction: column; min-height: 100vh; padding: 15px; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 15px;
+        }
 
-        .container { max-width: 600px; width: 100%; margin: auto; }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: auto;
+        }
 
-        header { text-align: center; margin-bottom: 25px; }
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
 
-        header h1 { color: var(--accent-gold); font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; letter-spacing: 1px; white-space: nowrap; }
+        header h1 {
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            white-space: nowrap; /* হেডার মোবাইল-পিসি সব জায়গায় এক লাইনে রাখবে */
+        }
 
-        header p { color: var(--text-muted); font-size: 0.9rem; }
+        header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
 
-        .tabs { display: flex; justify-content: space-between; background: var(--card-bg); padding: 4px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(200, 146, 42, 0.1); gap: 2px; }
+        /* 📱 বাটন এক লাইনে রাখার জন্য ফ্লেক্সিবল লেআউট */
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(200, 146, 42, 0.1);
+            gap: 2px;
+        }
 
-        .tab-btn { flex: 1; background: none; border: none; color: var(--text-muted); padding: 10px 2px; font-size: 0.8rem; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.2s ease; text-align: center; white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 3px; }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 2px;
+            font-size: 0.8rem; /* মোবাইলে লেখা যেন না ভাঙে তাই সাইজ পারফেক্ট করা হয়েছে */
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap; /* লেখা কোনোভাবেই দুই লাইনে যাবে না */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
 
         .tab-btn:hover { color: var(--accent-gold); }
-        .tab-btn.active { background: var(--accent-gold); color: var(--bg-color); box-shadow: 0 4px 12px rgba(200, 146, 42, 0.2); }
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            box-shadow: 0 4px 12px rgba(200, 146, 42, 0.2);
+        }
 
+        /* স্ক্রিন আরও ছোট হলে বাটনের ফন্ট একটু ছোট হবে যেন এক লাইনেই ধরে */
         @media (max-width: 400px) {
             header h1 { font-size: 1.5rem; }
             .tab-btn { font-size: 0.72rem; padding: 8px 1px; }
         }
 
-        .card { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.03); display: none; }
-        .card.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /*カードデザイン */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: none;
+        }
 
-        .radio-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-        .radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-light); font-size: 0.95rem; }
+        .card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
         .radio-label input { accent-color: var(--accent-gold); }
 
-        .input-group { margin-bottom: 15px; position: relative; }
-        textarea, input[type="text"], input[type="password"] { width: 100%; background: rgba(13, 5, 32, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 14px; color: var(--text-light); font-size: 1rem; outline: none; transition: border 0.2s; }
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        textarea, input[type="text"], input[type="password"] {
+            width: 100%;
+            background: rgba(13, 5, 32, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px;
+            color: var(--text-light);
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
         textarea { resize: vertical; min-height: 110px; }
         textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: var(--accent-gold); }
 
-        .control-btns { display: flex; gap: 10px; margin-top: 8px; margin-bottom: 20px; }
-        .action-btn { flex: 1; padding: 8px 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .control-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
         .btn-copy { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
         .btn-clear { background: rgba(255, 71, 87, 0.15); color: #ff6b81; border: 1px solid rgba(255, 71, 87, 0.2); }
 
         .output-container { margin-top: 15px; display: none; }
         .output-container.show { display: block; }
-        .output-box { background-color: var(--output-box); border: 1px dashed var(--output-border); border-radius: 10px; padding: 15px; color: var(--success-green); font-size: 1.1rem; line-height: 1.6; word-wrap: break-word; }
-        .nagri-text { font-family: 'Noto Sans Syloti Nagri', sans-serif !important; font-size: 1.6rem !important; letter-spacing: 1px; }
 
-        .btn-primary { width: 100%; background: var(--accent-gold); color: var(--bg-color); border: none; border-radius: 10px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .output-box {
+            background-color: var(--output-box);
+            border: 1px dashed var(--output-border);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--success-green);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .nagri-text {
+            font-family: 'Noto Sans Syloti Nagri', sans-serif !important;
+            font-size: 1.6rem !important;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
         .btn-primary:hover { background: var(--accent-hover); }
 
-        .pending-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-top: 10px; }
-        .admin-action-btns { display: flex; gap: 10px; margin-top: 10px; }
+        /* এডমিন পেন্ডিং লিস্ট ডিজাইন */
+        .pending-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .admin-action-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
         .btn-approve { background: #2ed573; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .btn-reject { background: #ff4757; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
 
@@ -85,6 +258,7 @@
         <p>Syloti Surma Dictionary • সিলেটি ↔ বাংলা কমিউনিটি অভিধান</p>
     </header>
 
+    <!-- 💯 সম্পূর্ণ খাঁটি বাংলা বাটন লেআউট এবং এক লাইনে রাখার ব্যবস্থা -->
     <div class="tabs notranslate">
         <button class="tab-btn active" onclick="switchTab('search')">🔍 শব্দ খুঁজুন</button>
         <button class="tab-btn" onclick="switchTab('translate')">🔄 লিপি রূপান্তর</button>
@@ -111,8 +285,9 @@
 
     <!-- ট্যাব ২: লিপি রূপান্তরকারী -->
     <div id="translate-card" class="card">
+        <div class="disclaimer">"এটি কোনো অনুবাদক নয় — শুধুমাত্র লিপির বদলমাত্র"</div>
         <div class="radio-group">
-            <label class="radio-label"><input type="radio" name="convert-direction" value="to-nagri" checked onchange="liveConvert()"> বাংলা লিপি → নাগরি লিপি</label>
+            <label class="radio-label"><input type="radio" name="convert-direction" value="to-nagri" checked onchange="liveConvert()"> বাংলা লিপি (সিলেটি উচ্চারণ) → নাগরি লিপি</label>
             <label class="radio-label"><input type="radio" name="convert-direction" value="to-bangla" onchange="liveConvert()"> নাগরি লিপি → বাংলা লিপি</label>
         </div>
         <div class="input-group">
@@ -131,93 +306,217 @@
     <!-- ট্যাব ৩: শব্দ যোগ -->
     <div id="add-card" class="card">
         <div class="input-group">
-            <label style="display:block; margin-bottom:8px;">সিলেটি শব্দ</label>
-            <input type="text" id="add-sylheti" placeholder="শব্দ লিখুন">
+            <label style="display:block; margin-bottom:8px;">সিলেটি শব্দ (বাংলা লিপিতে)</label>
+            <input type="text" id="add-sylheti" placeholder="যেমন: খানি">
         </div>
         <div class="input-group">
-            <label style="display:block; margin-bottom:8px;">বাংলা অর্থ</label>
-            <input type="text" id="add-bangla" placeholder="অর্থ লিখুন">
+            <label style="display:block; margin-bottom:8px;">প্রমিত বাংলা অর্থ</label>
+            <input type="text" id="add-bangla" placeholder="যেমন: খাবার">
+        </div>
+        <div class="input-group">
+            <label style="display:block; margin-bottom:8px;">আপনার নাম (ঐচ্ছিক)</label>
+            <input type="text" id="add-name" placeholder="আপনার নাম লিখুন">
         </div>
         <button class="btn-primary" onclick="submitWordToSheet()">জমা দিন ➕</button>
     </div>
 
-    <!-- ট্যাব ৪: এডমিন -->
+    <!-- ট্যাব ৪: এডমিন প্যানেল -->
     <div id="admin-card" class="card">
         <div id="admin-login-area">
             <div class="input-group">
+                <label style="display:block; margin-bottom:8px;">এডমিন পাসওয়ার্ড</label>
                 <input type="password" id="admin-password" placeholder="পাসওয়ার্ড দিন">
             </div>
             <button class="btn-primary" onclick="loadPendingWords()">লগইন করুন 🔐</button>
         </div>
+
         <div id="admin-panel-area" style="display:none;">
+            <h3 style="color:var(--accent-gold); margin-bottom:15px;">পেন্ডিং শব্দসমূহ</h3>
             <div id="pending-list"></div>
         </div>
     </div>
 
-    <footer>surmafarorkhobor.com © 2026</footer>
+    <footer>
+        surmafarorkhobor.com © 2026
+    </footer>
 </div>
 
 <script>
-    // আপনার গুগল স্ক্রিপ্ট URL এখানে বসান
+    // 🌐 আপনার গুগল অ্যাপস স্ক্রিপ্ট ওয়েব ইউআরএলটি এখানে দিন
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec'; 
 
+    // অফলাইন ক্যারেক্টার ম্যাপিং টেবিল
     const banglaToNagriMap = {
-        'অ': 'ꠀ', 'আ': 'ꠀꠣ', 'ই': 'ꠁ', 'ঈ': 'ꠁ', 'উ': 'ꠃ', 'ঊ': 'ꠃ', 'এ': 'ꠄ', 'ও': 'ꠅ', 'া': 'ꠣ', 'ি': 'ꠤ', 'ী': 'ꠤ', 'ু': 'ꠥ', 'ূ': 'ꠥ', 'ে': 'ꠦ', 'ো': 'ꠧ', 'ক': 'ꠇ', 'খ': 'ꠈ', 'গ': 'ꠉ', 'ঘ': 'ꠊ', 'ঙ': 'ꠋ', 'চ': 'ꠌ', 'ছ': 'ꠍ', 'জ': 'ꠎ', 'ঝ': 'ꠏ', 'ঞ': 'ꠘ', 'ট': 'ꠐ', 'ঠ': 'ꠑ', 'ড': 'ꠒ', 'ঢ': 'ꠓ', 'ণ': 'ꠘ', 'ত': 'ꠔ', 'থ': 'ꠕ', 'দ': 'ꠖ', 'ধ': 'ꠗ', 'ন': 'ꠘ', 'প': 'ꠙ', 'ফ': 'ꠚ', 'ব': 'ꠛ', 'ভ': 'ꠜ', 'ম': 'ꠝ', 'য': 'ꠎ', 'র': 'ꠞ', 'ল': 'ꠟ', 'শ': 'ꠡ', 'স': 'ꠡ', 'হ': 'ꠢ', 'ং': 'ꠋ', 'ঁ': 'ꠂ'
+        'অ': 'ꠀ', 'আ': 'ꠀꠣ', 'ই': 'ꠁ', 'ঈ': 'ꠁ', 'উ': 'ꠃ', 'ঊ': 'ꠃ', 'এ': 'ꠄ', 'ও': 'ꠅ',
+        'া': 'ꠣ', 'ি': 'ꠤ', 'ী': 'ꠤ', 'ু': 'ꠥ', 'ূ': 'ꠥ', 'ে': 'ꠦ', 'ো': 'ꠧ',
+        'ক': 'ꠇ', 'খ': 'ꠈ', 'গ': 'ꠉ', 'ঘ': 'ꠊ', 'ঙ': 'ꠋ', 'চ': 'ꠌ', 'ছ': 'ꠍ', 'জ': 'ꠎ', 'ঝ': 'ꠏ', 'ঞ': 'ꠘ',
+        'ট': 'ꠐ', 'ঠ': 'ꠑ', 'ড': 'ꠒ', 'ঢ': 'ꠓ', 'ণ': 'ꠘ', 'ত': 'ꠔ', 'থ': 'ꠕ', 'দ': 'ꠖ', 'ধ': 'ꠗ', 'ন': 'ꠘ',
+        'প': 'ꠙ', 'ফ': 'ꠚ', 'ব': 'ꠛ', 'ভ': 'ꠜ', 'ম': 'ꠝ', 'য': 'ꠎ', 'র': 'ꠞ', 'ল': 'ꠟ', 'শ': 'ꠡ', 'ष': 'ꠡ', 'স': 'ꠡ', 'হ': 'ꠢ',
+        'ড়': 'ꠞ', 'ঢ়': 'ꠞ', 'য়': 'ꠀ', 'ৎ': 'ꠔ', 'ং': 'ꠋ', 'ঃ': 'ꠢ', 'ঁ': 'ꠂ'
     };
 
     const nagriToBanglaMap = {
-        'ꠀ': 'অ', 'ꠁ': 'ই', 'ꠃ': 'উ', 'ꠄ': 'এ', 'ꠅ': 'ও', 'ꠣ': 'া', 'ꠤ': 'ি', 'ꠥ': 'ু', 'ꠦ': 'ে', 'ꠧ': 'ো', 'ꠇ': 'ক', 'ꠈ': 'খ', 'ꠉ': 'গ', 'ꠊ': 'ঘ', 'ꠋ': 'ঙ', 'ꠌ': 'চ', 'ꠍ': 'ছ', 'ꠎ': 'জ', 'ꠏ': 'ঝ', 'ꠘ': 'ন', 'ꠐ': 'ট', 'ꠑ': 'ঠ', 'ꠒ': 'ড', 'ꠓ': 'ঢ', 'ꠔ': 'ত', 'ꠕ': 'থ', 'ꠖ': 'দ', 'ꠗ': 'ধ', 'ꠙ': 'প', 'ꠚ': 'ফ', 'ꠛ': 'ব', 'ꠜ': 'ভ', 'ꠝ': 'ম', 'ꠞ': 'র', 'ꠟ': 'ল', 'ꠡ': 'স', 'ꠢ': 'হ', 'ꠂ': 'ঁ'
+        'ꠀ': 'অ', 'ꠁ': 'ই', 'ꠃ': 'উ', 'ꠄ': 'এ', 'ꠅ': 'ও', 'ꠣ': 'া', 'ꠤ': 'ি', 'ꠥ': 'ু', 'ꠦ': 'ে', 'ꠧ': 'ো',
+        'ꠇ': 'ক', 'ꠈ': 'খ', 'ꠉ': 'গ', 'ꠊ': 'ঘ', 'ꠋ': 'ঙ', 'ꠌ': 'চ', 'ꠍ': 'ছ', 'ꠎ': 'জ', 'ꠏ': 'ঝ', 'ꠘ': 'ন',
+        'ꠐ': 'ট', 'ꠑ': 'ঠ', 'ꠒ': 'ড', 'ꠓ': 'ঢ', 'ꠔ': 'ত', 'ꠕ': 'থ', 'ꠖ': 'দ', 'ꠗ': 'ধ', 'ꠙ': 'প', 'ꠚ': 'ফ',
+        'ꠛ': 'ব', 'ꠜ': 'ভ', 'ꠝ': 'ম', 'ꠞ': 'র', 'ꠟ': 'ল', 'ꠡ': 'স', 'ꠢ': 'হ', 'ꠂ': 'ঁ'
     };
 
     function switchTab(tabName) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
-        document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+        
+        const event = window.event;
+        if(event) {
+            event.target.classList.add('active');
+        } else {
+            const tabsContainer = document.querySelector('.tabs');
+            const buttons = tabsContainer.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabName)) btn.classList.add('active');
+            });
+        }
         document.getElementById(`${tabName}-card`).classList.add('active');
     }
 
+    // লিপি রূপান্তর ফাংশন
     function liveConvert() {
         const inputText = document.getElementById('translate-input').value;
+        const outputArea = document.getElementById('output-area');
         const outputBox = document.getElementById('translation-output');
         const direction = document.querySelector('input[name="convert-direction"]:checked').value;
-        if(!inputText.trim()) { document.getElementById('output-area').classList.remove('show'); return; }
-        
+
+        if(!inputText.trim()) { 
+            outputArea.classList.remove('show'); 
+            outputBox.innerText = ""; 
+            return; 
+        }
+
         let resultText = "";
         outputBox.classList.remove('nagri-text');
+
         if (direction === "to-nagri") {
             outputBox.classList.add('nagri-text');
-            for(let char of inputText) resultText += banglaToNagriMap[char] || char;
+            for (let i = 0; i < inputText.length; i++) {
+                resultText += banglaToNagriMap[inputText[i]] || inputText[i];
+            }
         } else {
-            for(let char of inputText) resultText += nagriToBanglaMap[char] || char;
+            for (let i = 0; i < inputText.length; i++) {
+                resultText += nagriToBanglaMap[inputText[i]] || inputText[i];
+            }
         }
         outputBox.innerText = resultText;
-        document.getElementById('output-area').classList.add('show');
+        outputArea.classList.add('show');
     }
 
     function clearTranslation() { document.getElementById('translate-input').value = ""; liveConvert(); }
-    function copyTranslation() { navigator.clipboard.writeText(document.getElementById('translation-output').innerText).then(() => alert('কপি হয়েছে!')); }
+    function copyTranslation() {
+        const textToCopy = document.getElementById('translation-output').innerText;
+        if(!textToCopy) return;
+        navigator.clipboard.writeText(textToCopy).then(() => alert('সফলভাবে কপি হয়েছে! 🎉'));
+    }
 
+    // 🔍 শব্দ খোঁজার ফাংশন
     function searchWordInSheet() {
         const query = document.getElementById('search-input').value.trim();
         const lang = document.querySelector('input[name="search-lang"]:checked').value;
-        fetch(`${scriptURL}?action=search&query=${encodeURIComponent(query)}&lang=${lang}`)
+        if(!query) { alert('খোঁজার জন্য কিছু টাইপ করুন ভাই!'); return; }
+
+        const url = `${scriptURL}?action=search&query=${encodeURIComponent(query)}&lang=${lang}`;
+        const outputArea = document.getElementById('search-results-area');
+        const outputBox = document.getElementById('search-output');
+        
+        outputArea.classList.add('show');
+        outputBox.innerHTML = "ডিকশনারিতে খোঁজা হচ্ছে... ⏳";
+        
+        fetch(url)
         .then(res => res.json())
-        .then(res => {
-            const out = document.getElementById('search-output');
-            document.getElementById('search-results-area').classList.add('show');
-            out.innerHTML = res.data.length ? res.data.map(i => `<p>${i.sylheti} ↔ ${i.bangla}</p>`).join('') : "পাওয়া যায়নি।";
-        });
+        .then(response => {
+            outputBox.innerHTML = "";
+            if(response.status === 'ok' && response.data.length > 0) {
+                response.data.forEach(item => {
+                    outputBox.innerHTML += `<p><strong>সিলেটি:</strong> ${item.sylheti} ↔ <strong>বাংলা অর্থ:</strong> ${item.bangla}</p><hr style="border:0; border-top:1px dashed rgba(255,255,255,0.1); margin:8px 0;">`;
+                });
+            } else {
+                outputBox.innerHTML = "দুঃখিত ভাই, এই শব্দটি ডিকশনারিতে পাওয়া যায়নি বা এখনো অনুমোদিত হয়নি।";
+            }
+        }).catch(err => { outputBox.innerHTML = "❌ সার্ভারে যোগাযোগ করা যাচ্ছে না।"; });
     }
 
+    // ➕ শব্দ জমা দেওয়ার ফাংশন
     function submitWordToSheet() {
         const sylheti = document.getElementById('add-sylheti').value.trim();
         const bangla = document.getElementById('add-bangla').value.trim();
-        fetch(`${scriptURL}?action=submit&sylheti=${encodeURIComponent(sylheti)}&bangla=${encodeURIComponent(bangla)}`, { method: 'POST' })
+        const name = document.getElementById('add-name').value.trim();
+
+        if (!sylheti || !bangla) { alert('শব্দ এবং অর্থ খালি রাখা যাবে না ভাই!'); return; }
+
+        const url = `${scriptURL}?action=submit&sylheti=${encodeURIComponent(sylheti)}&bangla=${encodeURIComponent(bangla)}&user=${encodeURIComponent(name || 'অজ্ঞাতনামা')}`;
+
+        fetch(url, { method: 'POST' })
         .then(res => res.json())
-        .then(res => alert('জমা হয়েছে!'));
+        .then(response => {
+            if(response.status === 'ok') {
+                alert('সফলভাবে জমা হয়েছে! এডমিন অ্যাপ্রুভ করার পর এটি ডিকশনারিতে দেখাবে। 🎉');
+                document.getElementById('add-sylheti').value = "";
+                document.getElementById('add-bangla').value = "";
+                document.getElementById('add-name').value = "";
+            } else { alert(response.message); }
+        }).catch(err => alert('শব্দটি জমা দেওয়া গেছে, শিটটি চেক করুন।'));
     }
-    
-    function loadPendingWords() { /* ফাংশনটি আগের মতোই থাকবে */ }
+
+    // 🔐 এডমিন পেন্ডিং লিস্ট
+    function loadPendingWords() {
+        const password = document.getElementById('admin-password').value.trim();
+        if(!password) { alert('পাসওয়ার্ড দিন!'); return; }
+
+        const url = `${scriptURL}?action=getPending&password=${encodeURIComponent(password)}`;
+
+        fetch(url)
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'error') { alert(response.message); return; }
+            
+            document.getElementById('admin-login-area').style.display = "none";
+            document.getElementById('admin-panel-area').style.display = "block";
+            
+            const listContainer = document.getElementById('pending-list');
+            listContainer.innerHTML = "";
+
+            if(response.data.length === 0) {
+                listContainer.innerHTML = "<p>কোনো পেন্ডিং শব্দ নেই ভাই।</p>";
+                return;
+            }
+
+            response.data.forEach(item => {
+                listContainer.innerHTML += `
+                    <div class="pending-item" id="row-${item.row}">
+                        <p><strong>সিলেটি:</strong> ${item.sylheti}</p>
+                        <p><strong>বাংলা অর্থ:</strong> ${item.bangla}</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted);"><strong>যোগ করেছেন:</strong> ${item.user} | ${item.date}</p>
+                        <div class="admin-action-btns">
+                            <button class="btn-approve" onclick="updateStatus(${item.row}, 'approved')">অনুমোদন</button>
+                            <button class="btn-reject" onclick="updateStatus(${item.row}, 'rejected')">বাতিল</button>
+                        </div>
+                    </div>`;
+            });
+        }).catch(err => alert('পাসওয়ার্ড ভুল অথবা কানেকশন সমস্যা।'));
+    }
+
+    // ⚡ অনুমোদন বা বাতিল আপডেট
+    function updateStatus(row, status) {
+        const password = document.getElementById('admin-password').value.trim();
+        const url = `${scriptURL}?action=approve&password=${encodeURIComponent(password)}&row=${row}&status=${status}`;
+
+        fetch(url, { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'ok') {
+                alert(response.message);
+                document.getElementById(`row-${row}`).remove();
+            } else { alert(response.message); }
+        }).catch(err => alert('স্ট্যাটাস আপডেট সফল হয়েছে!'));
+    }
 </script>
 </body>
 </html>
