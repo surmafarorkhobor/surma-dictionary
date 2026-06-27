@@ -145,13 +145,27 @@
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec';
 
+    // যুক্তাক্ষর আগে, তারপর একক বর্ণ — ক্রম গুরুত্বপূর্ণ
     const banglaToNagriMap = {
-        'অ':'ꠀ','আ':'ꠀꠣ','ই':'ꠁ','ঈ':'ꠁ','উ':'ꠃ','ঊ':'ꠃ','এ':'ꠄ','ও':'ꠅ',
-        'া':'ꠣ','ি':'ꠤ','ী':'ꠤ','ু':'ꠥ','ূ':'ꠥ','ে':'ꠦ','ো':'ꠧ',
-        'ক':'ꠇ','খ':'ꠈ','গ':'ꠉ','ঘ':'ꠊ','ঙ':'ꠋ','চ':'ꠌ','ছ':'ꠍ','জ':'ꠎ','ঝ':'ꠏ','ঞ':'ꠘ',
-        'ট':'ꠐ','ঠ':'ꠑ','ড':'ꠒ','ঢ':'ꠓ','ণ':'ꠘ','ত':'ꠔ','থ':'ꠕ','দ':'ꠖ','ধ':'ꠗ','ন':'ꠘ',
-        'প':'ꠙ','ফ':'ꠚ','ব':'ꠛ','ভ':'ꠜ','ম':'ꠝ','য':'ꠎ','র':'ꠞ','ল':'ꠟ','শ':'ꠡ','স':'ꠡ','হ':'ꠢ',
-        'ড়':'ꠞ','ঢ়':'ꠞ','য়':'ꠀ','ৎ':'ꠔ','ং':'ꠋ','ঃ':'ꠢ','ঁ':'ꠂ'
+        // বিশেষ যুক্ত বর্ণ (আগে রাখতে হবে)
+        'ড়': 'ꠠ', 'ঢ়': 'ꠡ', 'য়': 'ꠀ',
+        // স্বরবর্ণ
+        'অ': 'ꠅ', 'আ': 'ꠀ', 'ই': 'ꠁ', 'ঈ': 'ꠁ',
+        'উ': 'ꠃ', 'ঊ': 'ꠃ', 'এ': 'ꠄ', 'ও': 'ꠅ',
+        // মাত্রা
+        'া': 'ꠣ', 'ি': 'ꠤ', 'ী': 'ꠤ', 'ু': 'ꠥ',
+        'ূ': 'ꠥ', 'ে': 'ꠦ', 'ো': 'ꠧ',
+        // হসন্ত (যুক্তাক্ষর তৈরিতে)
+        '্': '꠆',
+        // ব্যঞ্জনবর্ণ
+        'ক': 'ꠇ', 'খ': 'ꠈ', 'গ': 'ꠉ', 'ঘ': 'ꠊ', 'ঙ': 'ꠋ',
+        'চ': 'ꠌ', 'ছ': 'ꠍ', 'জ': 'ꠎ', 'ঝ': 'ꠏ', 'ঞ': 'ꠘ',
+        'ট': 'ꠐ', 'ঠ': 'ꠑ', 'ড': 'ꠒ', 'ঢ': 'ꠓ',
+        'ণ': 'ꠘ', 'ত': 'ꠔ', 'থ': 'ꠕ', 'দ': 'ꠖ', 'ধ': 'ꠗ', 'ন': 'ꠘ',
+        'প': 'ꠙ', 'ফ': 'ꠚ', 'ব': 'ꠛ', 'ভ': 'ꠜ', 'ম': 'ꠝ',
+        'য': 'ꠎ', 'র': 'ꠞ', 'ল': 'ꠟ',
+        'শ': 'ꠡ', 'ষ': 'ꠡ', 'স': 'ꠡ', 'হ': 'ꠢ',
+        'ৎ': 'ꠔ', 'ং': 'ꠋ', 'ঃ': 'ꠢ', 'ঁ': 'ꠂ'
     };
 
     const nagriToBanglaMap = {
@@ -178,9 +192,27 @@
         outputBox.classList.remove('nagri-text');
         if (direction === "to-nagri") {
             outputBox.classList.add('nagri-text');
-            for (let i = 0; i < inputText.length; i++) { resultText += banglaToNagriMap[inputText[i]] || inputText[i]; }
+            // multi-char বর্ণ (ড়, ঢ়) আগে চেক করি
+            let i = 0;
+            const chars = [...inputText]; // Unicode aware split
+            while (i < chars.length) {
+                // দুই অক্ষর মিলে বিশেষ বর্ণ হয় কিনা চেক
+                if (i + 1 < chars.length) {
+                    const two = chars[i] + chars[i+1];
+                    if (banglaToNagriMap[two]) {
+                        resultText += banglaToNagriMap[two];
+                        i += 2;
+                        continue;
+                    }
+                }
+                resultText += banglaToNagriMap[chars[i]] || chars[i];
+                i++;
+            }
         } else {
-            for (let i = 0; i < inputText.length; i++) { resultText += nagriToBanglaMap[inputText[i]] || inputText[i]; }
+            const chars = [...inputText];
+            for (let i = 0; i < chars.length; i++) {
+                resultText += nagriToBanglaMap[chars[i]] || chars[i];
+            }
         }
         outputBox.innerText = resultText;
         outputArea.classList.add('show');
