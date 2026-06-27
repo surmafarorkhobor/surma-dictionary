@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title>Syloti Surma Dictionary</title>
     <!-- প্রফেশনাল ফন্টসমূহ -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Sans+Syloti+Nagri&display=swap" rel="stylesheet">
@@ -33,7 +34,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
@@ -44,12 +45,12 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         header h1 {
             color: var(--accent-gold);
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 5px;
             letter-spacing: 1px;
@@ -57,32 +58,43 @@
 
         header p {
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        /* নেভিগেশন ট্যাব */
+        /* 📱 সম্পূর্ণ রেসপন্সিভ মোবাইল ফ্রেন্ডলি নেভিগেশন ট্যাব */
         .tabs {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
             background: var(--card-bg);
-            padding: 5px;
+            padding: 6px;
             border-radius: 12px;
             margin-bottom: 25px;
             border: 1px solid rgba(200, 146, 42, 0.1);
         }
 
         .tab-btn {
-            flex: 1;
             background: none;
             border: none;
             color: var(--text-muted);
-            padding: 12px 5px;
-            font-size: 0.9rem;
+            padding: 10px 2px;
+            font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: 8px;
             transition: all 0.2s ease;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            line-height: 1.2;
+        }
+
+        .tab-btn span {
+            display: block;
+            white-space: nowrap;
         }
 
         .tab-btn:hover { color: var(--accent-gold); }
@@ -92,11 +104,24 @@
             box-shadow: 0 4px 12px rgba(200, 146, 42, 0.2);
         }
 
+        /* ছোট মোবাইলের জন্য ২ লাইনে বাটন সুন্দর করার মিডিয়া কুয়েরি */
+        @media (max-width: 400px) {
+            .tabs {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .tab-btn {
+                padding: 12px 5px;
+                font-size: 0.9rem;
+                flex-direction: row;
+            }
+        }
+
         /* কার্ড ডিজাইন */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.03);
             display: none;
@@ -240,15 +265,16 @@
 
 <div class="container">
     <header>
-        <h1>ꠍꠤꠟꠐꠤ ꠡꠥꠞꠝꠣ ꠒꠤꠇꠡꠅꠘꠣꠞꠤ</h1>
+        <h1 class="notranslate">ꠍꠤꠟꠐꠤ ꠡꠥꠞꠝꠣ ꠒꠤꠇꠡꠅꠘꠣꠞꠤ</h1>
         <p>Syloti Surma Dictionary • সিলেটি ↔ বাংলা কমিউনিটি অভিধান</p>
     </header>
 
+    <!-- নতুন মোবাইল ফ্রেন্ডলি স্ট্রাকচার -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('search')">🔍 শব্দ খুঁজুন</button>
-        <button class="tab-btn" onclick="switchTab('translate')">🔄 লিপি রূপান্তর</button>
-        <button class="tab-btn" onclick="switchTab('add')">➕ শব্দ যোগ</button>
-        <button class="tab-btn" onclick="switchTab('admin')">🔐 এডমিন</button>
+        <button class="tab-btn active" onclick="switchTab('search')">🔍<span>शब्द खोजें</span></button>
+        <button class="tab-btn" onclick="switchTab('translate')">🔄<span>लॉपी रूपांतर</span></button>
+        <button class="tab-btn" onclick="switchTab('add')">➕<span>शब्द जोड़ें</span></button>
+        <button class="tab-btn" onclick="switchTab('admin')">🔐<span>एडमिन</span></button>
     </div>
 
     <!-- ট্যাব ১: শব্দ খোঁজা -->
@@ -268,7 +294,7 @@
         </div>
     </div>
 
-    <!-- ট্যাব ২: সম্পূর্ণ ফ্রি ও অফলাইন লিপি রূপান্তরকারী (কোনো API নেই) -->
+    <!-- ট্যাব ২: লিপি রূপান্তরকারী -->
     <div id="translate-card" class="card">
         <div class="disclaimer">"এটি কোনো অনুবাদক নয় — শুধুমাত্র লিপির বদলমাত্র"</div>
         <div class="radio-group">
@@ -309,7 +335,7 @@
     <div id="admin-card" class="card">
         <div id="admin-login-area">
             <div class="input-group">
-                <label style="display:block; margin-bottom:8px;">实用 এডমিন পাসওয়ার্ড</label>
+                <label style="display:block; margin-bottom:8px;">এডমিন পাসওয়ার্ড</label>
                 <input type="password" id="admin-password" placeholder="পাসওয়ার্ড দিন">
             </div>
             <button class="btn-primary" onclick="loadPendingWords()">লগইন করুন 🔐</button>
@@ -353,7 +379,9 @@
         
         const event = window.event;
         if(event) {
-            event.target.classList.add('active');
+            let target = event.target;
+            if (target.tagName === 'SPAN') target = target.parentElement;
+            target.classList.add('active');
         } else {
             const tabsContainer = document.querySelector('.tabs');
             const buttons = tabsContainer.querySelectorAll('.tab-btn');
@@ -364,7 +392,7 @@
         document.getElementById(`${tabName}-card`).classList.add('active');
     }
 
-    // লিপি রূপান্তর ফাংশন (সম্পূর্ণ অফলাইন)
+    // লিপি রূপান্তর ফাংশন
     function liveConvert() {
         const inputText = document.getElementById('translate-input').value;
         const outputArea = document.getElementById('output-area');
