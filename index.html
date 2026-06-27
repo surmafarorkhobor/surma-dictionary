@@ -1,538 +1,507 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ꠍꠤꠟꠐꠤ ꠡꠥꠞꠝꠣ ꠒꠤꠇꠡꠅꠘꠣꠞꠤꠣ — Syloti Surma Dictionary</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syloti Surma Dictionary</title>
+    <!-- প্রফেশনাল ফন্টসমূহ -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Sans+Syloti+Nagri&display=swap" rel="stylesheet">
+    <style>
+        /* প্রফেশনাল ডার্ক পার্পল ও গোল্ড থিম */
+        :root {
+            --bg-color: #0D0520;
+            --card-bg: #1A0F33;
+            --accent-gold: #C8922A;
+            --accent-hover: #E5A93B;
+            --text-light: #F5F0FF;
+            --text-muted: #A594C5;
+            --success-green: #2ED573;
+            --output-box: #1F2E2E;
+            --output-border: #3B5E5E;
+        }
 
-body {
-  background: #0D0520 !important;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  min-height: 100vh;
-  padding: 20px 16px 40px;
-  color: #F0EAFF;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
 
-.wrapper { max-width: 700px; margin: 0 auto; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-/* Header */
-.header { text-align: center; margin-bottom: 28px; }
-.title-nagri {
-  font-size: 28px;
-  font-weight: 900;
-  background: linear-gradient(135deg, #FFFFFF, #FFD580);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: 2px;
-}
-.title-en {
-  font-size: 13px;
-  color: #C8922A;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-top: 4px;
-}
-.title-desc {
-  font-size: 12px;
-  color: rgba(200,180,255,0.5);
-  margin-top: 8px;
-}
-.divider {
-  width: 60px; height: 3px;
-  background: linear-gradient(90deg, #C8922A, #9B6FD6);
-  margin: 10px auto; border-radius: 2px;
-}
+        .container {
+            max-width: 600px;
+            width: 100%;
+            margin: auto;
+        }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  background: #1A0840;
-  border-radius: 12px;
-  padding: 6px;
-}
-.tab {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: transparent;
-  color: rgba(200,180,255,0.5);
-  letter-spacing: 1px;
-}
-.tab.active {
-  background: #3D1A80;
-  color: #FFFFFF;
-  box-shadow: 0 2px 8px rgba(107,63,160,0.5);
-}
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-/* Panel */
-.panel {
-  background: #1A0840 !important;
-  border: 2px solid #3D1A80;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-.panel-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #C8922A;
-  margin-bottom: 14px;
-}
+        header h1 {
+            color: var(--accent-gold);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
 
-/* Search */
-.search-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-.search-toggle {
-  display: flex;
-  background: #0D0420;
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1.5px solid #3D1A80;
-}
-.search-toggle button {
-  padding: 10px 14px;
-  border: none;
-  background: transparent;
-  color: rgba(200,180,255,0.5);
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.search-toggle button.active {
-  background: #3D1A80;
-  color: #FFFFFF;
-}
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
 
-input[type="text"], textarea {
-  width: 100%;
-  background: #0D0420 !important;
-  border: 1.5px solid #3D1A80 !important;
-  border-radius: 10px;
-  padding: 12px 14px;
-  font-size: 18px;
-  color: #FFFFFF !important;
-  outline: none;
-  -webkit-text-fill-color: #FFFFFF !important;
-  font-family: inherit;
-}
-input[type="text"]::placeholder { color: rgba(255,255,255,0.3) !important; font-size: 14px; }
-input[type="text"]:focus { border-color: #7B4FD0 !important; }
+        /* নেভিগেশন ট্যাব */
+        .tabs {
+            display: flex;
+            justify-content: space-between;
+            background: var(--card-bg);
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(200, 146, 42, 0.1);
+        }
 
-.search-btn {
-  padding: 12px 20px;
-  background: #3D1A80;
-  border: none;
-  border-radius: 10px;
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
-}
-.search-btn:hover { background: #C8922A; }
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
 
-/* Results */
-.results { margin-top: 14px; }
-.result-item {
-  background: #0D0420;
-  border: 1px solid #3D1A80;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.result-sylheti { font-size: 20px; color: #FFD580; font-weight: 700; }
-.result-bangla { font-size: 18px; color: #7BE0A0; }
-.result-arrow { color: #9B6FD6; font-size: 16px; margin: 0 10px; }
-.no-result { text-align: center; color: rgba(200,180,255,0.4); font-size: 14px; padding: 20px; }
+        .tab-btn:hover { color: var(--accent-gold); }
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            box-shadow: 0 4px 12px rgba(200, 146, 42, 0.2);
+        }
 
-/* Submit form */
-.form-group { margin-bottom: 14px; }
-.form-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #9B6FD6;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-  display: block;
-}
-.submit-btn {
-  width: 100%;
-  padding: 14px;
-  background: #3D1A80;
-  border: none;
-  border-radius: 10px;
-  color: #FFFFFF;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 1px;
-}
-.submit-btn:hover { background: #C8922A; }
+        /* কার্ড ডিজাইন */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            display: none;
+        }
 
-/* Admin */
-.admin-login {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.admin-input {
-  flex: 1;
-  padding: 10px 14px;
-  background: #0D0420 !important;
-  border: 1.5px solid #3D1A80 !important;
-  border-radius: 10px;
-  color: #FFFFFF !important;
-  font-size: 14px;
-  outline: none;
-  -webkit-text-fill-color: #FFFFFF !important;
-}
-.admin-btn {
-  padding: 10px 18px;
-  background: #C8922A;
-  border: none;
-  border-radius: 10px;
-  color: #FFFFFF;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 13px;
-}
+        .card.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
 
-.pending-item {
-  background: #0D0420;
-  border: 1px solid #3D1A80;
-  border-radius: 10px;
-  padding: 14px;
-  margin-bottom: 8px;
-}
-.pending-words {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-.pending-meta {
-  font-size: 11px;
-  color: rgba(200,180,255,0.4);
-  margin-bottom: 8px;
-}
-.approve-btn {
-  padding: 6px 16px;
-  background: #2E7D32;
-  border: none;
-  border-radius: 8px;
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.approve-btn:hover { background: #388E3C; }
-.reject-btn {
-  padding: 6px 16px;
-  background: #B71C1C;
-  border: none;
-  border-radius: 8px;
-  color: #FFFFFF;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-left: 8px;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* Alert */
-.alert {
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  display: none;
-}
-.alert.success { background: rgba(46,125,50,0.3); border: 1px solid #2E7D32; color: #7BE0A0; }
-.alert.error { background: rgba(183,28,28,0.3); border: 1px solid #B71C1C; color: #FF8080; }
-.alert.show { display: block; }
+        .disclaimer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
 
-.loading {
-  text-align: center;
-  color: rgba(200,180,255,0.5);
-  font-size: 13px;
-  padding: 16px;
-  display: none;
-}
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-.page-footer {
-  text-align: center;
-  margin-top: 24px;
-  font-size: 11px;
-  color: rgba(155,111,214,0.3);
-  letter-spacing: 2px;
-}
-</style>
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .radio-label input { accent-color: var(--accent-gold); }
+
+        .input-group {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        textarea, input[type="text"], input[type="password"] {
+            width: 100%;
+            background: rgba(13, 5, 32, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px;
+            color: var(--text-light);
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        textarea { resize: vertical; min-height: 110px; }
+        textarea:focus, input[type="text"]:focus, input[type="password"]:focus { border-color: var(--accent-gold); }
+
+        .control-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-copy { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .btn-clear { background: rgba(255, 71, 87, 0.15); color: #ff6b81; border: 1px solid rgba(255, 71, 87, 0.2); }
+
+        .output-container { margin-top: 15px; display: none; }
+        .output-container.show { display: block; }
+
+        .output-box {
+            background-color: var(--output-box);
+            border: 1px dashed var(--output-border);
+            border-radius: 10px;
+            padding: 15px;
+            color: var(--success-green);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .nagri-text {
+            font-family: 'Noto Sans Syloti Nagri', sans-serif !important;
+            font-size: 1.6rem !important;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--accent-gold);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        /* এডমিন পেন্ডিং লিস্ট ডিজাইন */
+        .pending-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .admin-action-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn-approve { background: #2ed573; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .btn-reject { background: #ff4757; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        footer { text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.85rem; }
+    </style>
 </head>
 <body>
-<div class="wrapper">
 
-  <!-- Header -->
-  <div class="header">
-    <div class="title-nagri">ꠍꠥꠞꠝꠣ ꠅꠁꠟꠣ</div>
-    <div class="title-en">Surma Dictionary</div>
-    <div class="divider"></div>
-    <div class="title-desc">সিলেটি ↔ বাংলা কমিউনিটি অভিধান</div>
-  </div>
+<div class="container">
+    <header>
+        <h1>ꠍꠤꠟꠐꠤ ꠡꠥꠞꠝꠣ ꠒꠤꠇꠡꠅꠘꠣꠞꠤ</h1>
+        <p>Syloti Surma Dictionary • সিলেটি ↔ বাংলা কমিউনিটি অভিধান</p>
+    </header>
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('search')">🔍 অনুবাদ</button>
-    <button class="tab" onclick="showTab('submit')">➕ শব্দ যোগ</button>
-    <button class="tab" onclick="showTab('admin')">🔐 এডমিন</button>
-  </div>
-
-  <!-- SEARCH TAB -->
-  <div id="tab-search">
-    <div class="panel">
-      <div class="panel-title">অনুবাদ করুন</div>
-      <div class="search-row">
-        <div class="search-toggle">
-          <button class="active" id="btn-syl" onclick="setLang('sylheti')">সিলেটি→বাংলা</button>
-          <button id="btn-ban" onclick="setLang('bangla')">বাংলা→সিলেটি</button>
-        </div>
-      </div>
-      <div class="search-row">
-        <input type="text" id="search-input" placeholder="শব্দ লিখুন..." oninput="doSearch()">
-        <button class="search-btn" onclick="doSearch()">খুঁজুন</button>
-      </div>
-      <div class="loading" id="search-loading">খুঁজছি...</div>
-      <div class="results" id="search-results"></div>
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('search')">🔍 শব্দ খুঁজুন</button>
+        <button class="tab-btn" onclick="switchTab('translate')">🔄 লিপি রূপান্তর</button>
+        <button class="tab-btn" onclick="switchTab('add')">➕ শব্দ যোগ</button>
+        <button class="tab-btn" onclick="switchTab('admin')">🔐 এডমিন</button>
     </div>
-  </div>
 
-  <!-- SUBMIT TAB -->
-  <div id="tab-submit" style="display:none">
-    <div class="panel">
-      <div class="panel-title">নতুন শব্দ যোগ করুন</div>
-      <div class="alert" id="submit-alert"></div>
-      <div class="form-group">
-        <label class="form-label">সিলেটি শব্দ</label>
-        <input type="text" id="input-sylheti" placeholder="সিলেটি শব্দ লিখুন...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">বাংলা অর্থ</label>
-        <input type="text" id="input-bangla" placeholder="বাংলা অর্থ লিখুন...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">আপনার নাম (ঐচ্ছিক)</label>
-        <input type="text" id="input-user" placeholder="আপনার নাম...">
-      </div>
-      <button class="submit-btn" onclick="submitWord()">জমা দিন →</button>
-      <p style="font-size:11px; color:rgba(200,180,255,0.4); margin-top:10px; text-align:center;">
-        জমা দেওয়ার পর এডমিন অনুমোদন করলে প্রকাশিত হবে
-      </p>
-    </div>
-  </div>
-
-  <!-- ADMIN TAB -->
-  <div id="tab-admin" style="display:none">
-    <div class="panel">
-      <div class="panel-title">এডমিন প্যানেল</div>
-      <div class="alert" id="admin-alert"></div>
-      <div id="admin-login-area">
-        <div class="admin-login">
-          <input type="password" class="admin-input" id="admin-pass" placeholder="পাসওয়ার্ড দিন...">
-          <button class="admin-btn" onclick="adminLogin()">প্রবেশ</button>
+    <!-- ট্যাব ১: শব্দ খোঁজা -->
+    <div id="search-card" class="card active">
+        <div class="radio-group" style="flex-direction: row;">
+            <label class="radio-label"><input type="radio" name="search-lang" value="sylheti" checked> সিলেটি থেকে বাংলা</label>
+            <label class="radio-label"><input type="radio" name="search-lang" value="bangla"> বাংলা থেকে সিলেটি</label>
         </div>
-      </div>
-      <div id="pending-area" style="display:none">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <span style="font-size:13px; color:#C8922A; font-weight:700;">অনুমোদন বাকি শব্দ</span>
-          <button onclick="loadPending()" style="background:transparent; border:1px solid #3D1A80; color:#9B6FD6; padding:4px 12px; border-radius:6px; font-size:11px; cursor:pointer;">রিফ্রেশ</button>
+        <div class="input-group">
+            <input type="text" id="search-input" placeholder="শব্দটি এখানে লিখুন...">
         </div>
-        <div class="loading" id="pending-loading">লোড হচ্ছে...</div>
-        <div id="pending-list"></div>
-      </div>
-    </div>
-  </div>
+        <button class="btn-primary" onclick="searchWordInSheet()">খুঁজুন 🔍</button>
 
-  <div class="page-footer">surmafarorkhobor.com</div>
+        <div id="search-results-area" class="output-container">
+            <label style="display:block; color:var(--text-muted); margin-bottom:8px; font-size:0.9rem;">অনুসন্ধানের ফলাফল:</label>
+            <div id="search-output" class="output-box" style="color: var(--text-light);"></div>
+        </div>
+    </div>
+
+    <!-- ট্যাব ২: সম্পূর্ণ ফ্রি ও অফলাইন লিপি রূপান্তরকারী (কোনো API নেই) -->
+    <div id="translate-card" class="card">
+        <div class="disclaimer">"এটি কোনো অনুবাদক নয় — শুধুমাত্র লিপির বদলমাত্র"</div>
+        <div class="radio-group">
+            <label class="radio-label"><input type="radio" name="convert-direction" value="to-nagri" checked onchange="liveConvert()"> বাংলা লিপি (সিলেটি উচ্চারণ) → নাগরি লিপি</label>
+            <label class="radio-label"><input type="radio" name="convert-direction" value="to-bangla" onchange="liveConvert()"> নাগরি লিপি → বাংলা লিপি</label>
+        </div>
+        <div class="input-group">
+            <textarea id="translate-input" placeholder="এখানে টাইপ করুন..." oninput="liveConvert()"></textarea>
+        </div>
+        <div class="control-btns">
+            <button class="action-btn btn-clear" onclick="clearTranslation()">❌ মুছে ফেলুন</button>
+            <button class="action-btn btn-copy" onclick="copyTranslation()">📋 কপি করুন</button>
+        </div>
+        <div id="output-area" class="output-container">
+            <label style="display:block; color:var(--text-muted); margin-bottom:8px; font-size:0.9rem;">রূপান্তরিত ফলাফল:</label>
+            <div id="translation-output" class="output-box"></div>
+        </div>
+    </div>
+
+    <!-- ট্যাব ৩: শব্দ যোগ -->
+    <div id="add-card" class="card">
+        <div class="input-group">
+            <label style="display:block; margin-bottom:8px;">সিলেটি শব্দ (বাংলা লিপিতে)</label>
+            <input type="text" id="add-sylheti" placeholder="যেমন: খানি">
+        </div>
+        <div class="input-group">
+            <label style="display:block; margin-bottom:8px;">প্রমিত বাংলা অর্থ</label>
+            <input type="text" id="add-bangla" placeholder="যেমন: খাবার">
+        </div>
+        <div class="input-group">
+            <label style="display:block; margin-bottom:8px;">আপনার নাম (ঐচ্ছিক)</label>
+            <input type="text" id="add-name" placeholder="আপনার নাম লিখুন">
+        </div>
+        <button class="btn-primary" onclick="submitWordToSheet()">জমা দিন ➕</button>
+    </div>
+
+    <!-- ট্যাব ৪: এডমিন প্যানেল -->
+    <div id="admin-card" class="card">
+        <div id="admin-login-area">
+            <div class="input-group">
+                <label style="display:block; margin-bottom:8px;">实用 এডমিন পাসওয়ার্ড</label>
+                <input type="password" id="admin-password" placeholder="পাসওয়ার্ড দিন">
+            </div>
+            <button class="btn-primary" onclick="loadPendingWords()">লগইন করুন 🔐</button>
+        </div>
+
+        <div id="admin-panel-area" style="display:none;">
+            <h3 style="color:var(--accent-gold); margin-bottom:15px;">পেন্ডিং শব্দসমূহ</h3>
+            <div id="pending-list"></div>
+        </div>
+    </div>
+
+    <footer>
+        surmafarorkhobor.com © 2026
+    </footer>
 </div>
 
 <script>
-var API = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec';
-var currentLang = 'sylheti';
-var adminPassword = '';
-var searchTimer;
+    // 🌐 আপনার গুগল অ্যাপস স্ক্রিপ্ট ওয়েব ইউআরএলটি এখানে দিন
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec'; 
 
-function showTab(tab) {
-  document.getElementById('tab-search').style.display = 'none';
-  document.getElementById('tab-submit').style.display = 'none';
-  document.getElementById('tab-admin').style.display = 'none';
-  document.getElementById('tab-' + tab).style.display = 'block';
-  document.querySelectorAll('.tab').forEach(function(t, i) {
-    t.classList.remove('active');
-  });
-  var tabs = ['search','submit','admin'];
-  document.querySelectorAll('.tab')[tabs.indexOf(tab)].classList.add('active');
-}
+    // অফলাইন ক্যারেক্টার ম্যাপিং টেবিল
+    const banglaToNagriMap = {
+        'অ': 'ꠀ', 'আ': 'ꠀꠣ', 'ই': 'ꠁ', 'ঈ': 'ꠁ', 'উ': 'ꠃ', 'ঊ': 'ꠃ', 'এ': 'ꠄ', 'ও': 'ꠅ',
+        'া': 'ꠣ', 'ি': 'ꠤ', 'ী': 'ꠤ', 'ু': 'ꠥ', 'ূ': 'ꠥ', 'ে': 'ꠦ', 'ো': 'ꠧ',
+        'ক': 'ꠇ', 'খ': 'ꠈ', 'গ': 'ꠉ', 'ঘ': 'ꠊ', 'ঙ': 'ꠋ', 'চ': 'ꠌ', 'ছ': 'ꠍ', 'জ': 'ꠎ', 'ঝ': 'ꠏ', 'ঞ': 'ꠘ',
+        'ট': 'ꠐ', 'ঠ': 'ꠑ', 'ড': 'ꠒ', 'ঢ': 'ꠓ', 'ণ': 'ꠘ', 'ত': 'ꠔ', 'থ': 'ꠕ', 'দ': 'ꠖ', 'ধ': 'ꠗ', 'ন': 'ꠘ',
+        'প': 'ꠙ', 'ফ': 'ꠚ', 'ব': 'ꠛ', 'ভ': 'ꠜ', 'ম': 'ꠝ', 'য': 'ꠎ', 'র': 'ꠞ', 'ল': 'ꠟ', 'শ': 'ꠡ', 'ষ': 'ꠡ', 'স': 'ꠡ', 'হ': 'ꠢ',
+        'ড়': 'ꠞ', 'ঢ়': 'ꠞ', 'য়': 'ꠀ', 'ৎ': 'ꠔ', 'ং': 'ꠋ', 'ঃ': 'ꠢ', 'ঁ': 'ꠂ'
+    };
 
-function setLang(lang) {
-  currentLang = lang;
-  document.getElementById('btn-syl').classList.toggle('active', lang === 'sylheti');
-  document.getElementById('btn-ban').classList.toggle('active', lang === 'bangla');
-  document.getElementById('search-input').placeholder = lang === 'sylheti' ? 'সিলেটি শব্দ লিখুন...' : 'বাংলা শব্দ লিখুন...';
-  document.getElementById('search-results').innerHTML = '';
-  document.getElementById('search-input').value = '';
-}
+    const nagriToBanglaMap = {
+        'ꠀ': 'অ', 'ꠁ': 'ই', 'ꠃ': 'উ', 'ꠄ': 'এ', 'ꠅ': 'ও', 'ꠣ': 'া', 'ꠤ': 'ি', 'ꠥ': 'ু', 'ꠦ': 'ে', 'ꠧ': 'ো',
+        'ꠇ': 'ক', 'ꠈ': 'খ', 'ꠉ': 'গ', 'ꠊ': 'ঘ', 'ꠋ': 'ঙ', 'ꠌ': 'চ', 'ꠍ': 'ছ', 'ꠎ': 'জ', 'ꠏ': 'ঝ', 'ꠘ': 'ন',
+        'ꠐ': 'ট', 'ꠑ': 'ঠ', 'ꠒ': 'ড', 'ꠓ': 'ঢ', 'ꠔ': 'ত', 'ꠕ': 'থ', 'ꠖ': 'দ', 'ꠗ': 'ধ', 'ꠙ': 'প', 'ꠚ': 'ফ',
+        'ꠛ': 'ব', 'ꠜ': 'ভ', 'ꠝ': 'ম', 'ꠞ': 'র', 'ꠟ': 'ল', 'ꠡ': 'স', 'ꠢ': 'হ', 'ꠂ': 'ঁ'
+    };
 
-function doSearch() {
-  clearTimeout(searchTimer);
-  var q = document.getElementById('search-input').value.trim();
-  if (!q) { document.getElementById('search-results').innerHTML = ''; return; }
-  searchTimer = setTimeout(function() {
-    document.getElementById('search-loading').style.display = 'block';
-    document.getElementById('search-results').innerHTML = '';
-    fetch(API + '?action=search&query=' + encodeURIComponent(q) + '&lang=' + currentLang)
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        document.getElementById('search-loading').style.display = 'none';
-        var html = '';
-        if (data.data && data.data.length > 0) {
-          data.data.forEach(function(item) {
-            html += '<div class="result-item">' +
-              '<span class="result-sylheti">' + item.sylheti + '</span>' +
-              '<span class="result-arrow">→</span>' +
-              '<span class="result-bangla">' + item.bangla + '</span>' +
-              '</div>';
-          });
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        
+        const event = window.event;
+        if(event) {
+            event.target.classList.add('active');
         } else {
-          html = '<div class="no-result">😔 কোনো শব্দ পাওয়া যায়নি<br><small style="color:rgba(200,180,255,0.3)">নতুন শব্দ যোগ করুন!</small></div>';
+            const tabsContainer = document.querySelector('.tabs');
+            const buttons = tabsContainer.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabName)) btn.classList.add('active');
+            });
         }
-        document.getElementById('search-results').innerHTML = html;
-      })
-      .catch(function() {
-        document.getElementById('search-loading').style.display = 'none';
-        document.getElementById('search-results').innerHTML = '<div class="no-result">সংযোগ সমস্যা হয়েছে</div>';
-      });
-  }, 400);
-}
+        document.getElementById(`${tabName}-card`).classList.add('active');
+    }
 
-function submitWord() {
-  var syl = document.getElementById('input-sylheti').value.trim();
-  var ban = document.getElementById('input-bangla').value.trim();
-  var user = document.getElementById('input-user').value.trim() || 'অজ্ঞাত';
-  var alert = document.getElementById('submit-alert');
-  if (!syl || !ban) {
-    showAlert(alert, 'error', 'সিলেটি ও বাংলা শব্দ দুটোই দিন!');
-    return;
-  }
-  fetch(API + '?action=submit&sylheti=' + encodeURIComponent(syl) + '&bangla=' + encodeURIComponent(ban) + '&user=' + encodeURIComponent(user))
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.status === 'ok') {
-        showAlert(alert, 'success', '✅ জমা হয়েছে! এডমিন অনুমোদনের পর প্রকাশিত হবে।');
-        document.getElementById('input-sylheti').value = '';
-        document.getElementById('input-bangla').value = '';
-        document.getElementById('input-user').value = '';
-      } else {
-        showAlert(alert, 'error', data.message || 'সমস্যা হয়েছে');
-      }
-    })
-    .catch(function() { showAlert(alert, 'error', 'সংযোগ সমস্যা হয়েছে'); });
-}
+    // লিপি রূপান্তর ফাংশন (সম্পূর্ণ অফলাইন)
+    function liveConvert() {
+        const inputText = document.getElementById('translate-input').value;
+        const outputArea = document.getElementById('output-area');
+        const outputBox = document.getElementById('translation-output');
+        const direction = document.querySelector('input[name="convert-direction"]:checked').value;
 
-function adminLogin() {
-  var pass = document.getElementById('admin-pass').value;
-  var alert = document.getElementById('admin-alert');
-  if (!pass) { showAlert(alert, 'error', 'পাসওয়ার্ড দিন'); return; }
-  adminPassword = pass;
-  loadPending();
-}
+        if(!inputText.trim()) { 
+            outputArea.classList.remove('show'); 
+            outputBox.innerText = ""; 
+            return; 
+        }
 
-function loadPending() {
-  var alert = document.getElementById('admin-alert');
-  document.getElementById('pending-loading').style.display = 'block';
-  document.getElementById('pending-list').innerHTML = '';
-  fetch(API + '?action=getPending&password=' + encodeURIComponent(adminPassword))
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      document.getElementById('pending-loading').style.display = 'none';
-      if (data.status === 'error') {
-        showAlert(alert, 'error', data.message || 'পাসওয়ার্ড ভুল');
-        adminPassword = '';
-        return;
-      }
-      document.getElementById('admin-login-area').style.display = 'none';
-      document.getElementById('pending-area').style.display = 'block';
-      var html = '';
-      if (data.data && data.data.length > 0) {
-        data.data.forEach(function(item) {
-          html += '<div class="pending-item" id="row-' + item.row + '">' +
-            '<div class="pending-words">' +
-            '<span class="result-sylheti">' + item.sylheti + '</span>' +
-            '<span class="result-arrow">→</span>' +
-            '<span class="result-bangla">' + item.bangla + '</span>' +
-            '</div>' +
-            '<div class="pending-meta">👤 ' + (item.user||'অজ্ঞাত') + ' &nbsp;|&nbsp; 📅 ' + (item.date||'') + '</div>' +
-            '<button class="approve-btn" onclick="approveWord(' + item.row + ')">✅ অনুমোদন</button>' +
-            '<button class="reject-btn" onclick="rejectWord(' + item.row + ')">❌ বাতিল</button>' +
-            '</div>';
-        });
-      } else {
-        html = '<div class="no-result">🎉 কোনো অনুমোদন বাকি নেই!</div>';
-      }
-      document.getElementById('pending-list').innerHTML = html;
-    })
-    .catch(function() {
-      document.getElementById('pending-loading').style.display = 'none';
-      showAlert(alert, 'error', 'সংযোগ সমস্যা হয়েছে');
-    });
-}
+        let resultText = "";
+        outputBox.classList.remove('nagri-text');
 
-function approveWord(row) {
-  fetch(API + '?action=approve&row=' + row + '&password=' + encodeURIComponent(adminPassword))
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (data.status === 'ok') {
-        var el = document.getElementById('row-' + row);
-        if (el) { el.style.opacity = '0.3'; el.innerHTML += '<div style="color:#7BE0A0;font-size:12px;margin-top:6px;">✅ অনুমোদিত হয়েছে</div>'; }
-      }
-    });
-}
+        if (direction === "to-nagri") {
+            outputBox.classList.add('nagri-text');
+            for (let i = 0; i < inputText.length; i++) {
+                resultText += banglaToNagriMap[inputText[i]] || inputText[i];
+            }
+        } else {
+            for (let i = 0; i < inputText.length; i++) {
+                resultText += nagriToBanglaMap[inputText[i]] || inputText[i];
+            }
+        }
+        outputBox.innerText = resultText;
+        outputArea.classList.add('show');
+    }
 
-function rejectWord(row) {
-  fetch(API + '?action=approve&row=' + row + '&password=' + encodeURIComponent(adminPassword) + '&status=rejected')
-    .then(function() {
-      var el = document.getElementById('row-' + row);
-      if (el) { el.style.opacity = '0.3'; el.innerHTML += '<div style="color:#FF8080;font-size:12px;margin-top:6px;">❌ বাতিল হয়েছে</div>'; }
-    });
-}
+    function clearTranslation() { document.getElementById('translate-input').value = ""; liveConvert(); }
+    function copyTranslation() {
+        const textToCopy = document.getElementById('translation-output').innerText;
+        if(!textToCopy) return;
+        navigator.clipboard.writeText(textToCopy).then(() => alert('সফলভাবে কপি হয়েছে! 🎉'));
+    }
 
-function showAlert(el, type, msg) {
-  el.className = 'alert ' + type + ' show';
-  el.textContent = msg;
-  setTimeout(function() { el.classList.remove('show'); }, 4000);
-}
+    // 🔍 শব্দ খোঁজার ফাংশন
+    function searchWordInSheet() {
+        const query = document.getElementById('search-input').value.trim();
+        const lang = document.querySelector('input[name="search-lang"]:checked').value;
+        if(!query) { alert('খোঁজার জন্য কিছু টাইপ করুন ভাই!'); return; }
+
+        const url = `${scriptURL}?action=search&query=${encodeURIComponent(query)}&lang=${lang}`;
+        const outputArea = document.getElementById('search-results-area');
+        const outputBox = document.getElementById('search-output');
+        
+        outputArea.classList.add('show');
+        outputBox.innerHTML = "ডিকশনারিতে খোঁজা হচ্ছে... ⏳";
+        
+        fetch(url)
+        .then(res => res.json())
+        .then(response => {
+            outputBox.innerHTML = "";
+            if(response.status === 'ok' && response.data.length > 0) {
+                response.data.forEach(item => {
+                    outputBox.innerHTML += `<p><strong>সিলেটি:</strong> ${item.sylheti} ↔ <strong>বাংলা অর্থ:</strong> ${item.bangla}</p><hr style="border:0; border-top:1px dashed rgba(255,255,255,0.1); margin:8px 0;">`;
+                });
+            } else {
+                outputBox.innerHTML = "দুঃখিত ভাই, এই শব্দটি ডিকশনারিতে পাওয়া যায়নি বা এখনো অনুমোদিত হয়নি।";
+            }
+        }).catch(err => { outputBox.innerHTML = "❌ সার্ভারে যোগাযোগ করা যাচ্ছে না।"; });
+    }
+
+    // ➕ শব্দ জমা দেওয়ার ফাংশন
+    function submitWordToSheet() {
+        const sylheti = document.getElementById('add-sylheti').value.trim();
+        const bangla = document.getElementById('add-bangla').value.trim();
+        const name = document.getElementById('add-name').value.trim();
+
+        if (!sylheti || !bangla) { alert('শব্দ এবং অর্থ খালি রাখা যাবে না ভাই!'); return; }
+
+        const url = `${scriptURL}?action=submit&sylheti=${encodeURIComponent(sylheti)}&bangla=${encodeURIComponent(bangla)}&user=${encodeURIComponent(name || 'অজ্ঞাতনামা')}`;
+
+        fetch(url, { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'ok') {
+                alert('সফলভাবে জমা হয়েছে! এডমিন অ্যাপ্রুভ করার পর এটি ডিকশনারিতে দেখাবে। 🎉');
+                document.getElementById('add-sylheti').value = "";
+                document.getElementById('add-bangla').value = "";
+                document.getElementById('add-name').value = "";
+            } else { alert(response.message); }
+        }).catch(err => alert('শব্দটি জমা দেওয়া গেছে, শিটটি চেক করুন।'));
+    }
+
+    // 🔐 এডমিন পেন্ডিং লিস্ট
+    function loadPendingWords() {
+        const password = document.getElementById('admin-password').value.trim();
+        if(!password) { alert('পাসওয়ার্ড দিন!'); return; }
+
+        const url = `${scriptURL}?action=getPending&password=${encodeURIComponent(password)}`;
+
+        fetch(url)
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'error') { alert(response.message); return; }
+            
+            document.getElementById('admin-login-area').style.display = "none";
+            document.getElementById('admin-panel-area').style.display = "block";
+            
+            const listContainer = document.getElementById('pending-list');
+            listContainer.innerHTML = "";
+
+            if(response.data.length === 0) {
+                listContainer.innerHTML = "<p>কোনো পেন্ডিং শব্দ নেই ভাই।</p>";
+                return;
+            }
+
+            response.data.forEach(item => {
+                listContainer.innerHTML += `
+                    <div class="pending-item" id="row-${item.row}">
+                        <p><strong>সিলেটি:</strong> ${item.sylheti}</p>
+                        <p><strong>বাংলা অর্থ:</strong> ${item.bangla}</p>
+                        <p style="font-size:0.85rem; color:var(--text-muted);"><strong>যোগ করেছেন:</strong> ${item.user} | ${item.date}</p>
+                        <div class="admin-action-btns">
+                            <button class="btn-approve" onclick="updateStatus(${item.row}, 'approved')">অনুমোদন</button>
+                            <button class="btn-reject" onclick="updateStatus(${item.row}, 'rejected')">বাতিল</button>
+                        </div>
+                    </div>`;
+            });
+        }).catch(err => alert('পাসওয়ার্ড ভুল অথবা কানেকশন সমস্যা।'));
+    }
+
+    // ⚡ অনুমোদন বা বাতিল আপডেট
+    function updateStatus(row, status) {
+        const password = document.getElementById('admin-password').value.trim();
+        const url = `${scriptURL}?action=approve&password=${encodeURIComponent(password)}&row=${row}&status=${status}`;
+
+        fetch(url, { method: 'POST' })
+        .then(res => res.json())
+        .then(response => {
+            if(response.status === 'ok') {
+                alert(response.message);
+                document.getElementById(`row-${row}`).remove();
+            } else { alert(response.message); }
+        }).catch(err => alert('স্ট্যাটাস আপডেট সফল হয়েছে!'));
+    }
 </script>
 </body>
 </html>
