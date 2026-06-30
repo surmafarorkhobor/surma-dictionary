@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="bn" translate="no">
 <head>
@@ -55,6 +56,13 @@
         .btn-approve { background: #2ed573; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .btn-reject { background: #ff4757; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
         footer { text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.85rem; }
+        .word-count-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(200,146,42,0.12); border: 1px solid rgba(200,146,42,0.3); color: var(--accent-gold); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 10px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: var(--card-bg); border: 1px solid var(--accent-gold); border-radius: 14px; padding: 22px; max-width: 380px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+        .modal-box .modal-icon { font-size: 2.2rem; margin-bottom: 10px; }
+        .modal-box p { color: var(--text-light); margin-bottom: 18px; font-size: 0.95rem; line-height: 1.5; }
+        .modal-box button { background: var(--accent-gold); color: var(--bg-color); border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -62,6 +70,7 @@
     <header>
         <h1 class="notranslate">ꠍꠤꠟꠐꠤ ꠡꠥꠞꠝꠣ ꠒꠤꠇꠡꠅꠘꠣꠞꠤ</h1>
         <p class="notranslate">Syloti Surma Dictionary &bull; সিলেটি &harr; বাংলা কমিউনিটি অভিধান</p>
+        <div class="word-count-badge notranslate">📖 মোট শব্দ: <span id="total-word-count">লোড হচ্ছে...</span></div>
     </header>
 
     <div class="tabs">
@@ -142,30 +151,80 @@
     <footer class="notranslate">surmafarorkhobor.com &copy; 2026</footer>
 </div>
 
+<!-- ডুপ্লিকেট শব্দ পপআপ -->
+<div id="duplicate-modal" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-icon">⚠️</div>
+        <p class="notranslate">এই শব্দটি <strong id="duplicate-word-name"></strong> ডিকশনারিতে আগে থেকেই যোগ করা আছে।</p>
+        <button class="notranslate" onclick="closeDuplicateModal()">ঠিক আছে</button>
+    </div>
+</div>
+
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwVzPVtjJyVmKVwKN8KGzv45oi2qevOvTrvH6-2JvkKhB01x_Mw4mn7o2-Io6mZbfx_/exec';
 
-    // যুক্তাক্ষর আগে, তারপর একক বর্ণ — ক্রম গুরুত্বপূর্ণ
     const banglaToNagriMap = {
-        // বিশেষ যুক্ত বর্ণ (আগে রাখতে হবে)
-        'ড়': 'ꠠ', 'ঢ়': 'ꠡ', 'য়': 'ꠀ',
+        // বিশেষ বর্ণ — ড় = ড(U+09A1) + ়(U+09BC)
+        '\u09A1\u09BC': '\uA820', // ড় → ꠠ
+        '\u09A2\u09BC': '\uA821', // ঢ় → ꠡ (নাগরিতে)
+        '\u09AF\u09BC': '\uA800', // য় → ꠀ
         // স্বরবর্ণ
-        'অ': 'ꠅ', 'আ': 'ꠀ', 'ই': 'ꠁ', 'ঈ': 'ꠁ',
-        'উ': 'ꠃ', 'ঊ': 'ꠃ', 'এ': 'ꠄ', 'ও': 'ꠅ',
+        '\u0985': '\uA805', // অ → ꠅ
+        '\u0986': '\uA800', // আ → ꠀ
+        '\u0987': '\uA801', // ই → ꠁ
+        '\u0988': '\uA801', // ঈ → ꠁ
+        '\u0989': '\uA803', // উ → ꠃ
+        '\u098A': '\uA803', // ঊ → ꠃ
+        '\u098F': '\uA804', // এ → ꠄ
+        '\u0993': '\uA805', // ও → ꠅ
         // মাত্রা
-        'া': 'ꠣ', 'ি': 'ꠤ', 'ী': 'ꠤ', 'ু': 'ꠥ',
-        'ূ': 'ꠥ', 'ে': 'ꠦ', 'ো': 'ꠧ',
-        // হসন্ত (যুক্তাক্ষর তৈরিতে)
-        '্': '꠆',
+        '\u09BE': '\uA823', // া → ꠣ
+        '\u09BF': '\uA824', // ি → ꠤ
+        '\u09C0': '\uA824', // ী → ꠤ
+        '\u09C1': '\uA825', // ু → ꠥ
+        '\u09C2': '\uA825', // ূ → ꠥ
+        '\u09CB': '\uA827', // ো → ꠧ
+        '\u09C7': '\uA826', // ে → ꠦ
+        // হসন্ত
+        '\u09CD': '\uA806', // ্ → ꠆
         // ব্যঞ্জনবর্ণ
-        'ক': 'ꠇ', 'খ': 'ꠈ', 'গ': 'ꠉ', 'ঘ': 'ꠊ', 'ঙ': 'ꠋ',
-        'চ': 'ꠌ', 'ছ': 'ꠍ', 'জ': 'ꠎ', 'ঝ': 'ꠏ', 'ঞ': 'ꠘ',
-        'ট': 'ꠐ', 'ঠ': 'ꠑ', 'ড': 'ꠒ', 'ঢ': 'ꠓ',
-        'ণ': 'ꠘ', 'ত': 'ꠔ', 'থ': 'ꠕ', 'দ': 'ꠖ', 'ধ': 'ꠗ', 'ন': 'ꠘ',
-        'প': 'ꠙ', 'ফ': 'ꠚ', 'ব': 'ꠛ', 'ভ': 'ꠜ', 'ম': 'ꠝ',
-        'য': 'ꠎ', 'র': 'ꠞ', 'ল': 'ꠟ',
-        'শ': 'ꠡ', 'ষ': 'ꠡ', 'স': 'ꠡ', 'হ': 'ꠢ',
-        'ৎ': 'ꠔ', 'ং': 'ꠋ', 'ঃ': 'ꠢ', 'ঁ': 'ꠂ'
+        '\u0995': '\uA807', // ক → ꠇ
+        '\u0996': '\uA808', // খ → ꠈ
+        '\u0997': '\uA809', // গ → ꠉ
+        '\u0998': '\uA80A', // ঘ → ꠊ
+        '\u0999': '\uA80B', // ঙ → ꠋ
+        '\u099A': '\uA80C', // চ → ꠌ
+        '\u099B': '\uA80D', // ছ → ꠍ
+        '\u099C': '\uA80E', // জ → ꠎ
+        '\u099D': '\uA80F', // ঝ → ꠏ
+        '\u099E': '\uA818', // ঞ → ꠘ
+        '\u099F': '\uA810', // ট → ꠐ
+        '\u09A0': '\uA811', // ঠ → ꠑ
+        '\u09A1': '\uA812', // ড → ꠒ
+        '\u09A2': '\uA813', // ঢ → ꠓ
+        '\u09A3': '\uA818', // ণ → ꠘ
+        '\u09A4': '\uA814', // ত → ꠔ
+        '\u09A5': '\uA815', // থ → ꠕ
+        '\u09A6': '\uA816', // দ → ꠖ
+        '\u09A7': '\uA817', // ধ → ꠗ
+        '\u09A8': '\uA818', // ন → ꠘ
+        '\u09AA': '\uA819', // প → ꠙ
+        '\u09AB': '\uA81A', // ফ → ꠚ
+        '\u09AC': '\uA81B', // ব → ꠛ
+        '\u09AD': '\uA81C', // ভ → ꠜ
+        '\u09AE': '\uA81D', // ম → ꠝ
+        '\u09AF': '\uA80E', // য → ꠎ
+        '\u09B0': '\uA81E', // র → ꠞ
+        '\u09B2': '\uA81F', // ল → ꠟ
+        '\u09B6': '\uA821', // শ → ꠡ
+        '\u09B7': '\uA821', // ষ → ꠡ
+        '\u09B8': '\uA821', // স → ꠡ
+        '\u09B9': '\uA822', // হ → ꠢ
+        '\u09CE': '\uA814', // ৎ → ꠔ
+        '\u09BC': '',        // ় একা আসলে মুছে দাও
+        '\u0982': '\uA80B', // ং → ꠋ
+        '\u0983': '\uA822', // ঃ → ꠢ
+        '\u0981': '\uA802', // ঁ → ꠂ
     };
 
     const nagriToBanglaMap = {
@@ -190,28 +249,28 @@
         if (!inputText.trim()) { outputArea.classList.remove('show'); outputBox.innerText = ""; return; }
         let resultText = "";
         outputBox.classList.remove('nagri-text');
+
         if (direction === "to-nagri") {
             outputBox.classList.add('nagri-text');
-            // multi-char বর্ণ (ড়, ঢ়) আগে চেক করি
             let i = 0;
-            const chars = [...inputText]; // Unicode aware split
-            while (i < chars.length) {
-                // দুই অক্ষর মিলে বিশেষ বর্ণ হয় কিনা চেক
-                if (i + 1 < chars.length) {
-                    const two = chars[i] + chars[i+1];
-                    if (banglaToNagriMap[two]) {
+            while (i < inputText.length) {
+                // দুই অক্ষর মিলে বিশেষ বর্ণ — ড়, ঢ়, য়
+                if (i + 1 < inputText.length) {
+                    const two = inputText[i] + inputText[i+1];
+                    if (banglaToNagriMap[two] !== undefined) {
                         resultText += banglaToNagriMap[two];
                         i += 2;
                         continue;
                     }
                 }
-                resultText += banglaToNagriMap[chars[i]] || chars[i];
+                const ch = inputText[i];
+                resultText += (banglaToNagriMap[ch] !== undefined) ? banglaToNagriMap[ch] : ch;
                 i++;
             }
         } else {
-            const chars = [...inputText];
-            for (let i = 0; i < chars.length; i++) {
-                resultText += nagriToBanglaMap[chars[i]] || chars[i];
+            for (let i = 0; i < inputText.length; i++) {
+                const ch = inputText[i];
+                resultText += (nagriToBanglaMap[ch] !== undefined) ? nagriToBanglaMap[ch] : ch;
             }
         }
         outputBox.innerText = resultText;
@@ -244,11 +303,35 @@
         }).catch(() => { outputBox.innerHTML = "❌ সার্ভারে যোগাযোগ করা যাচ্ছে না।"; });
     }
 
+    function closeDuplicateModal() {
+        document.getElementById('duplicate-modal').classList.remove('show');
+    }
+
     function submitWordToSheet() {
         const sylheti = document.getElementById('add-sylheti').value.trim();
         const bangla = document.getElementById('add-bangla').value.trim();
         const name = document.getElementById('add-name').value.trim();
         if (!sylheti || !bangla) { alert('শব্দ এবং অর্থ খালি রাখা যাবে না!'); return; }
+
+        // আগে চেক করো শব্দটি আগে থেকেই আছে কিনা
+        const checkUrl = scriptURL + '?action=search&query=' + encodeURIComponent(sylheti) + '&lang=sylheti';
+        fetch(checkUrl).then(r => r.json()).then(checkResponse => {
+            const exists = checkResponse.status === 'ok' && checkResponse.data.some(item =>
+                item.sylheti.trim() === sylheti
+            );
+            if (exists) {
+                document.getElementById('duplicate-word-name').innerText = sylheti;
+                document.getElementById('duplicate-modal').classList.add('show');
+                return;
+            }
+            actuallySubmitWord(sylheti, bangla, name);
+        }).catch(() => {
+            // চেক ব্যর্থ হলেও জমা দেওয়ার চেষ্টা চালিয়ে যাও
+            actuallySubmitWord(sylheti, bangla, name);
+        });
+    }
+
+    function actuallySubmitWord(sylheti, bangla, name) {
         const url = scriptURL + '?action=submit&sylheti=' + encodeURIComponent(sylheti) + '&bangla=' + encodeURIComponent(bangla) + '&user=' + encodeURIComponent(name || 'অজ্ঞাতনামা');
         fetch(url, { method: 'POST' }).then(r => r.json()).then(response => {
             if (response.status === 'ok') {
@@ -258,6 +341,15 @@
                 document.getElementById('add-name').value = "";
             } else { alert(response.message); }
         }).catch(() => alert('শব্দটি জমা দেওয়া হয়েছে, শিটটি চেক করুন।'));
+    }
+
+    function loadTotalWordCount() {
+        const countEl = document.getElementById('total-word-count');
+        const url = scriptURL + '?action=count';
+        fetch(url).then(r => r.json()).then(response => {
+            if (response.status === 'ok') { countEl.innerText = response.count; }
+            else { countEl.innerText = '—'; }
+        }).catch(() => { countEl.innerText = '—'; });
     }
 
     function loadPendingWords() {
@@ -289,6 +381,7 @@
     // Browser auto-translate বন্ধ রাখা
     document.addEventListener('DOMContentLoaded', function() {
         document.documentElement.setAttribute('translate', 'no');
+        loadTotalWordCount();
     });
 </script>
 </body>
